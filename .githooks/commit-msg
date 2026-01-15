@@ -1,0 +1,13 @@
+#!/bin/bash
+# Git hook launcher - delegates to the-lodge validator
+# See: the-lodge/conventions/git-hooks/commit-msg
+
+LODGE_HOOK="${HOME}/Developer/the-lodge/conventions/git-hooks/commit-msg"
+
+if [[ ! -f "${LODGE_HOOK}" ]]; then
+  echo "Warning: the-lodge commit-msg hook not found at ${LODGE_HOOK}" >&2
+  echo "Skipping validation." >&2
+  exit 0
+fi
+
+exec "${LODGE_HOOK}" "$@"
