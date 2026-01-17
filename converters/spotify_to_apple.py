@@ -94,3 +94,40 @@ def convert_playlist(spotify_url: str, progress_callback=None) -> ConversionResu
         unmatched=unmatched,
         match_rate=match_rate,
     )
+
+
+def export_for_shortcut(result: ConversionResult) -> str:
+    """
+    Export conversion result in a format suitable for the Apple Music Shortcut.
+
+    Returns one "Artist - Song Title" per line, which the Shortcut can search for.
+    """
+    lines = []
+    for track, match in result.matched:
+        # Use the Apple Music match names for better search accuracy
+        lines.append(f"{match.artist_name} - {match.track_name}")
+    return "\n".join(lines)
+
+
+def export_as_markdown(result: ConversionResult, spotify_url: str = "") -> str:
+    """
+    Export conversion result as a markdown file with clickable Apple Music links.
+    """
+    lines = [
+        f"# {result.playlist_name} - Apple Music Links\n",
+        f"Converted from: {spotify_url}\n" if spotify_url else "",
+        f"**Match rate:** {len(result.matched)}/{result.total_tracks} ({result.match_rate:.1f}%)\n",
+        "\n## Matched Tracks\n",
+    ]
+
+    for track, match in result.matched:
+        artist = track.artists[0] if track.artists else "Unknown"
+        lines.append(f"- [{track.name}]({match.apple_music_url}) by {artist}")
+
+    if result.unmatched:
+        lines.append("\n## Unmatched Tracks\n")
+        for track in result.unmatched:
+            artist = track.artists[0] if track.artists else "Unknown"
+            lines.append(f"- {track.name} by {artist}")
+
+    return "\n".join(lines)
