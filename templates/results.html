@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversion Results - This Into That</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Conversion Results</h1>
+            <a href="/" class="back-link">← Back to Converters</a>
+        </header>
+
+        <main>
+            <section class="results-summary">
+                <h2>{{ results.playlist_name }}</h2>
+                <div class="stats">
+                    <p class="match-rate">
+                        Matched <strong>{{ results.matched|length }}</strong> of
+                        <strong>{{ results.total_tracks }}</strong> tracks
+                        (<strong>{{ "%.1f"|format(results.match_rate) }}%</strong>)
+                    </p>
+                </div>
+            </section>
+
+            {% if results.matched %}
+            <section class="tracks-section">
+                <h3>✓ Matched Tracks</h3>
+                <ul class="track-list">
+                    {% for track in results.matched %}
+                    <li class="track-item">
+                        <div class="track-info">
+                            <span class="track-name">{{ track.name }}</span>
+                            <span class="track-artist">{{ track.artist }}</span>
+                        </div>
+                        <a href="{{ track.apple_url }}" class="apple-music-link" target="_blank">
+                            Open in Apple Music
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
+
+            {% if results.unmatched %}
+            <section class="tracks-section unmatched-section">
+                <h3>✗ Unmatched Tracks</h3>
+                <p class="section-description">These tracks could not be found in Apple Music</p>
+                <ul class="track-list">
+                    {% for track in results.unmatched %}
+                    <li class="track-item unmatched">
+                        <div class="track-info">
+                            <span class="track-name">{{ track.name }}</span>
+                            <span class="track-artist">{{ track.artist }}</span>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
+
+            <div class="actions">
+                <a href="/" class="btn-secondary">Convert Another Playlist</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

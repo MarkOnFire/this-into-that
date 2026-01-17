@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This Into That</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>This Into That</h1>
+            <p class="subtitle">Convert This Into That</p>
+        </header>
+
+        <main>
+            <section class="converter-section">
+                <h2>Spotify → Apple Music</h2>
+                <p class="description">Convert your Spotify playlists to Apple Music</p>
+
+                {% if error %}
+                <div class="error-message">
+                    <strong>Error:</strong> {{ error }}
+                </div>
+                {% endif %}
+
+                <form action="/convert/spotify-to-apple" method="post">
+                    <div class="form-group">
+                        <label for="spotify_url">Spotify Playlist URL</label>
+                        <input
+                            type="url"
+                            id="spotify_url"
+                            name="spotify_url"
+                            placeholder="https://open.spotify.com/playlist/..."
+                            required
+                        >
+                    </div>
+                    <button type="submit" class="btn-primary">Convert to Apple Music</button>
+                </form>
+            </section>
+
+            <section class="future-converters">
+                <h3>More Converters Coming Soon</h3>
+                <p class="muted">Additional conversion tools will be added here</p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
